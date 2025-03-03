@@ -18,7 +18,8 @@ class SiteController extends Controller
     }
 
     function page2(){
-        return Inertia::render('page2');
+        $meta=['title'=>'This is blade  title page 2 '];
+        return Inertia::render('page2')->withViewData(['meta' => $meta]);
     }
 
     function page3(){
