@@ -23,7 +23,8 @@ class SiteController extends Controller
     }
 
     function page3(){
-        return Inertia::render('page3');
+        $ShareData=['message'=>'Logged In','status'=>true, 'share_data'=>'My share Data' ];
+        return Inertia::render('page3')->with($ShareData);
     }
 
     function page4(){
