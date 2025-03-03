@@ -30,6 +30,12 @@
         <li class="nav-item">
           <Link class="nav-link" href="/page5">page5</Link>
         </li>
+        <li class="nav-item">
+          <Link class="nav-link" preserve-scroll href="/page6">page6</Link>
+        </li>
+        <li class="nav-item">
+          <Link class="nav-link" href="/page7">page7</Link>
+        </li>
 
         <li class="nav-item">
           <a class="nav-link disabled" aria-disabled="true">Disabled</a>
