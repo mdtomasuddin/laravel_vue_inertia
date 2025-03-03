@@ -30,6 +30,11 @@ class SiteController extends Controller
     function page4(){
         return Inertia::render('page4');
     }
+    function PostBackRequest(Request $request){
+        $Json= $request->input();
+        $ShareData=['message'=>'Logged In','status'=>true, 'share_data'=>$Json ];
+        return redirect()->route('page4')->with($ShareData);
+    }
 
     function page5(){
         return Inertia::render('page5');
