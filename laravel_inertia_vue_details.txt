@@ -1,0 +1,745 @@
+>Laravel new rabbil_laravel_inertia_vue
+> Which starter kit would you like to install? [None]:>vue
+> php artisan make:controller SiteController
+Which authentication provider do you prefer? [Laravel's built-in authentication]:>Laravel
+Which testing framework do you prefer? [Pest]:> 0
+Would you like to run npm install and npm run build? (yes/no) [yes]:> yes
+> cd rabbil_laravel_inertia_vue
+> composer run dev
+> php artisan make:controller SiteController
+
+
+
+
+routes/web.php
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SiteController;
+
+Route::get('/', [SiteController::class,'Index'])->name('Index');
+Route::get('/Page1', [SiteController::class,'Page1'])->name('Page1');
+Route::get('/Page2', [SiteController::class,'Page2'])->name('Page2');
+Route::get('/Page3', [SiteController::class,'Page3'])->name('Page3');
+Route::get('/Page4', [SiteController::class,'Page4'])->name('Page4');
+Route::get('/Page5', [SiteController::class,'Page5'])->name('Page5');
+Route::get('/Page6', [SiteController::class,'Page6'])->name('Page6');
+Route::get('/Page7', [SiteController::class,'Page7'])->name('Page7');
+Route::get('/Page8', [SiteController::class,'Page8'])->name('Page8');
+Route::get('/Page9', [SiteController::class,'Page9'])->name('Page9');
+Route::get('/Page10', [SiteController::class,'Page10'])->name('Page10');
+
+Route::get('/Page11', [SiteController::class,'Page11'])->name('Page11');
+Route::get('/Page12', [SiteController::class,'Page12'])->name('Page12');
+
+Route::post('/PostBackRequest', [SiteController::class,'PostBackRequest'])->name('PostBackRequest');
+Route::post('/PostBackForError', [SiteController::class,'PostBackForError'])->name('PostBackForError');
+Route::post('/PostBackRequestFromLink', [SiteController::class,'PostBackRequestFromLink'])->name('PostBackRequestFromLink');
+
+Route::post('/UploadRequest', [SiteController::class,'UploadRequest'])->name('UploadRequest');
+
+
+
+
+
+resources/js/pages/Index.vue
+<script setup>
+import NavBar from "@/components/NavBar.vue";
+</script>
+<template>
+        <NavBar/>
+        <h1>Index</h1>
+</template>
+<style scoped>
+</style>
+
+
+
+
+
+resources/js/components/NavBar.vue
+<script setup>
+import { Link } from '@inertiajs/vue3'
+</script>
+<template>
+    <nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Navbar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <Link  class="nav-link active" href="/">Home</Link >
+                    </li>
+                    <li class="nav-item">
+                        <Link  class="nav-link" href="/Page1">Page1</Link >
+                    </li>
+                    <li class="nav-item">
+                        <Link  class="nav-link" href="/Page2">Page2</Link >
+                    </li>
+                    <li class="nav-item">
+                        <Link  class="nav-link" href="/Page3">Page3</Link >
+                    </li>
+                    <li class="nav-item">
+                        <Link  class="nav-link" href="/Page4">Page4</Link >
+                    </li>
+                    <li class="nav-item">
+                        <Link  class="nav-link" href="/Page5">Page5</Link >
+                    </li>
+                    <li class="nav-item">
+                        <Link  class="nav-link" href="/Page6">Page6</Link >
+                    </li>
+                    <li class="nav-item">
+                        <Link  class="nav-link" href="/Page7">Page7</Link >
+                    </li>
+                    <li class="nav-item">
+                        <Link  class="nav-link" href="/Page8">Page8</Link >
+                    </li>
+                    <li class="nav-item">
+                        <Link  class="nav-link"  href="/Page9" preserve-scroll>Page9</Link >
+                    </li>
+                    <li class="nav-item">
+                        <Link  class="nav-link"  href="/Page10" preserve-scroll>Page10</Link >
+                    </li>
+                    <li class="nav-item">
+                        <Link  class="nav-link"  href="/Page11">Page11</Link >
+                    </li>
+                    <li class="nav-item">
+                        <Link  class="nav-link"  href="/Page12">Page12</Link >
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</template>
+
+
+
+
+
+
+
+resources/js/app.js
+import { createApp, h } from 'vue'
+import { createInertiaApp } from '@inertiajs/vue3'
+import 'bootstrap'
+import 'bootstrap/dist/css/bootstrap.css'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'; // This is important for the progress bar styles
+import { router } from '@inertiajs/vue3'
+
+createInertiaApp({
+    resolve: name => {
+        const pages = import.meta.glob('./pages/**/*.vue', { eager: true })
+        return pages[`./pages/${name}.vue`]
+    },
+    setup({ el, App, props, plugin }) {
+        createApp({ render: () => h(App, props) })
+            .use(plugin)
+            .mount(el)
+    },
+})
+// Appear @ Route Start
+router.on('start', () => {
+    NProgress.start()
+})
+// Appear @ Route Finish
+router.on('finish', () =>{
+    NProgress.done()
+})
+
+
+
+
+
+
+
+
+resources/views/app.blade.php
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <link rel="stylesheet" href="{{url('https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css')}}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    @vite('resources/js/app.js')
+    @inertiaHead
+</head>
+<body>
+@inertia
+</body>
+</html>
+
+
+
+
+
+app/Http/Controllers/SiteController.php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use App\Models\USER;
+
+class SiteController extends Controller
+{
+    function Index(Request $request){
+        return Inertia::render('Index');    }
+    function Page1(Request $request){
+        $JSON=['name' => 'Rabbil','age'=>38,'city'=>'Dhaka'];
+        return Inertia::render('Page1',['data'=>$JSON]);    }
+    function Page2(Request $request){
+        $meta=['title' => 'This is title'];
+        return Inertia::render('Page2')->withViewData(['meta' => $meta]);    }
+    function Page3(Request $request){
+        $SharedData = ['message'=>'Test Message ','status' => true,'share_data'=>"This is Shared Data"];
+        return Inertia::render('Page3')->with($SharedData);    }
+    function Page4(Request $request){
+        return Inertia::render('Page4');    }
+    function PostBackRequest(Request $request){
+        // USER::where(====)->get();
+        USER::where('name', 'John')->get();
+        $JsonObject= $request->input();
+        $data = ['message'=>'Submit Success','status' => true,'share_data'=>$JsonObject];
+        return redirect()->route('Page4')->with($data);    }
+    function Page5(Request $request){
+        $meta=['title' => 'Title','description'=>"description"];
+        return Inertia::render('Page5',['meta'=>$meta]);    }
+    function Page6(Request $request){
+        return Inertia::render('Page6');    }
+    function Page7(Request $request){
+        return Inertia::render('Page7');    }
+    function UploadRequest(Request $request){
+        $img=$request->file('image_file');
+        $img->move(public_path('uploads'), $img->getClientOriginalName());
+        $data = ['message'=>'Submit Success','status' => true,'share_data'=>"share_data"];
+        return redirect()->route('Page6')->with($data);    }
+    function Page8(Request $request){
+        return Inertia::render('Page8');    }
+    function PostBackForError(Request $request){
+        return redirect()->route('Page000');    }
+    function Page9(Request $request){
+        return Inertia::render('scroll/Page9');    }
+    function Page10(Request $request){
+        return Inertia::render('scroll/Page10');    }
+    function Page11(Request $request){
+        return Inertia::render('Page11');    }
+    function PostBackRequestFromLink(Request $request){
+       $JsonObject= $request->input();
+       $data = ['message'=>'Submit Success','status' => true,'share_data'=>$JsonObject];
+       return redirect()->route('Page11')->with($data);   }
+    function Page12(Request $request){
+        return Inertia::render('Page12');    }
+}
+
+
+
+
+
+
+
+
+resources/js/pages/Page1.vue
+<script setup>
+import NavBar from "@/components/NavBar.vue";
+import Child1 from "@/components/Child1.vue";
+const props = defineProps({data: Object})
+</script>
+<template>
+    <NavBar/>
+    <Child1 :data="props.data"/>
+</template>
+
+<style scoped>
+
+</style>
+
+
+
+
+
+
+
+
+resources/js/components/Child1.vue
+<script setup>
+const props = defineProps({data: Object})
+</script>
+<template>
+    {{JSON.stringify(props.data)}}
+</template>
+
+<style scoped>
+
+</style>
+
+
+
+
+
+
+
+
+
+
+PS E:\Laravel_Project_Practice\Module26\rabbil_laravel_inertia_vue> npm install bootstrap
+PS E:\Laravel_Project_Practice\Module26\rabbil_laravel_inertia_vue> npm install nprogress
+PS E:\Laravel_Project_Practice\Module26\rabbil_laravel_inertia_vue> npm run dev
+
+
+
+
+
+
+
+
+
+
+resources/js/pages/Page2.vue
+<script setup>
+import NavBar from "@/components/NavBar.vue";
+</script>
+
+<template>
+    <NavBar/>
+    <h1>Page2</h1>
+</template>
+
+<style scoped>
+
+</style>
+
+
+
+
+
+
+resources/js/components/Child3.vue
+<script setup>
+import { usePage } from '@inertiajs/vue3'
+const page = usePage()
+</script>
+<template>
+    <h1>From Child Component</h1>
+    <h6>Message: {{page.props.message}}</h6>
+    <h6>Status: {{page.props.status}}</h6>
+    <h6>Shared Data: {{page.props.share_data}}</h6>
+</template>
+
+
+
+
+
+
+
+
+resources/js/pages/Page3.vue
+<script setup>
+import NavBar from "@/components/NavBar.vue";
+import { usePage } from '@inertiajs/vue3'
+import Child3 from "@/components/Child3.vue";
+const page = usePage()
+</script>
+
+<template>
+    <NavBar/>
+    <h1>From Parent Component</h1>
+    <h6>Message: {{page.props.message}}</h6>
+    <h6>Status: {{page.props.status}}</h6>
+    <h6>Shared Data: {{page.props.share_data}}</h6>
+    <Child3 />
+</template>
+
+
+
+
+
+
+
+
+resources/js/pages/Page4.vue
+<script setup>
+import { usePage } from '@inertiajs/vue3'
+import {useForm} from '@inertiajs/vue3'
+import NavBar from "@/components/NavBar.vue";
+const page = usePage()
+const form = useForm({first_name: "", last_name: "", email: ""})
+
+function submit() {
+    form.post('/PostBackRequest', {
+        preserveScroll: true,
+        onSuccess: () =>{
+                alert(page.props.flash.message)
+                alert(JSON.stringify(page.props.flash.share_data))
+            form.reset()
+        }
+    })
+}
+</script>
+
+<template>
+    <NavBar/>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <h3 class="mb-3">Form Post Back</h3>
+                <form @submit.prevent="submit">
+                    <label for="first_name">First name:</label>
+                    <input class="form-control" id="first_name" v-model="form.first_name" />
+                    <label for="last_name">Last name:</label>
+                    <input class="form-control" id="last_name" v-model="form.last_name" />
+                    <label for="email">Email:</label>
+                    <input class="form-control mb-3" id="email" v-model="form.email" />
+                    <button class="btn btn-primary w-100" type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+
+
+
+
+
+
+resources/js/pages/Page5.vue
+<script setup>
+import NavBar from "@/components/NavBar.vue";
+import { Head } from '@inertiajs/vue3'
+const props = defineProps({meta: Object})
+</script>
+
+<template>
+    <NavBar/>
+    <Head>
+        <title>{{props.meta.title}}</title>
+        <meta name="description" content="{{props.meta.description}}">
+    </Head>
+    <h1>Page5</h1>
+</template>
+
+<style scoped>
+
+</style>
+
+
+
+
+
+
+
+
+resources/js/pages/Page6.vue
+<script setup>
+import {useForm, usePage} from "@inertiajs/vue3";
+import NavBar from "@/components/NavBar.vue";
+const page = usePage()
+
+
+const form = useForm({image_file: ""})
+
+function submit() {
+    form.post('/UploadRequest', {
+        forceFormData: true,
+        preserveScroll: true,
+        onSuccess: () =>{
+            alert(page.props.flash.message)
+            alert(JSON.stringify(page.props.flash.share_data))
+            form.reset()
+        }
+    })
+}
+
+</script>
+
+<template>
+    <NavBar/>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <h3 class="mb-3">File Upload</h3>
+
+                <form @submit.prevent="submit">
+                    <label for="email">File</label>
+                    <input class="form-control" type="file" @input="form.image_file=$event.target.files[0]" />
+                    <button class="btn btn-primary mt-3 w-100" type="submit">Submit</button>
+
+                    <progress class="w-100" v-if="form.progress" :value="form.progress.percentage" max="100">
+                        {{ form.progress.percentage }}%
+                    </progress>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+
+
+
+
+
+
+
+resources/js/pages/Page7.vue
+<script setup>
+import { usePage } from '@inertiajs/vue3'
+import {useForm} from '@inertiajs/vue3'
+import NavBar from "@/components/NavBar.vue";
+const page = usePage()
+const form = useForm({first_name: "", last_name: "", email: ""})
+
+function submit() {
+    form.post('/PostBackRequest', {
+        preserveScroll: true,
+        onSuccess: () =>{
+            alert(page.props.flash.message)
+            alert(JSON.stringify(page.props.flash.share_data))
+            form.reset()
+        }
+    })
+}
+</script>
+
+<template>
+    <NavBar/>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <h3 class="mb-3">Form Post Back CSRF Token</h3>
+                <form @submit.prevent="submit">
+                    <label for="first_name">First name:</label>
+                    <input class="form-control" id="first_name" v-model="form.first_name" />
+                    <label for="last_name">Last name:</label>
+                    <input class="form-control" id="last_name" v-model="form.last_name" />
+                    <label for="email">Email:</label>
+                    <input class="form-control mb-3" id="email" v-model="form.email" />
+                    <button class="btn btn-primary w-100" type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+
+
+
+
+
+
+resources/js/pages/Page8.vue
+<script setup>
+import { usePage } from '@inertiajs/vue3'
+import {useForm} from '@inertiajs/vue3'
+import NavBar from "@/components/NavBar.vue";
+const page = usePage()
+const form = useForm({first_name: "", last_name: "", email: ""})
+
+function submit() {
+    form.post('/PostBackForError', {
+        preserveScroll: true,
+        onSuccess: () =>{
+            alert(page.props.flash.message)
+            alert(JSON.stringify(page.props.flash.share_data))
+            form.reset()
+        }
+    })
+}
+</script>
+
+<template>
+    <NavBar/>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <h3 class="mb-3">Form Post & Get Error</h3>
+                <form @submit.prevent="submit">
+                    <label for="first_name">First name:</label>
+                    <input class="form-control" id="first_name" v-model="form.first_name" />
+                    <label for="last_name">Last name:</label>
+                    <input class="form-control" id="last_name" v-model="form.last_name" />
+                    <label for="email">Email:</label>
+                    <input class="form-control mb-3" id="email" v-model="form.email" />
+                    <button class="btn btn-primary w-100" type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+
+
+
+
+
+
+resources/js/pages/scroll/Page9.vue
+<script setup>
+import NavBar from "@/components/NavBar.vue";
+</script>
+
+<template>
+    <NavBar/>
+    <div>
+        <h4>Page9</h4>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+    </div>
+</template>
+
+
+
+
+
+
+
+
+resources/js/pages/scroll/Page10.vue
+<script setup>
+import NavBar from "@/components/NavBar.vue";
+</script>
+
+<template>
+    <NavBar/>
+    <div>
+        <h4>Page10</h4>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+    </div>
+</template>
+
+
+
+
+
+
+
+
+resources/js/pages/Page11.vue
+<script setup>
+import NavBar from "@/components/NavBar.vue";
+import { Link } from '@inertiajs/vue3'
+</script>
+<template>
+    <NavBar/>
+    <h5>Post|Put|Patch|Delete|Get Request Methods</h5>
+    <Link href="/logout" method="post" as="button" type="button">Post Request</Link>
+    <Link href="/logout" method="put" as="button" type="button">Put Request</Link>
+    <Link href="/logout" method="patch" as="button" type="button">Patch Request</Link>
+    <Link href="/logout" method="delete" as="button" type="button">Delete Request</Link>
+    <Link href="/logout" method="get" as="button" type="button">Get Request</Link>
+    <h5>Post Back Data Directly</h5>
+    <Link href="/PostBackRequestFromLink" :data="{ name: 'Jhon',city:'dhaka' }" method="post" as="button" type="button">Post Request</Link>
+    <h5>Post Back With Header</h5>
+    <Link href="/PostBackRequestFromLink" :headers="{ token: 'XYZ-123' }" :data="{ name: 'Jhon',city:'dhaka' }" method="post" as="button" type="button">Post Request</Link>
+    <h5>Browser history Replace </h5>
+    <Link href="/Page10" replace>Browser history Replace</Link>
+    <h5>Active states</h5>
+    <Link href="/" :class="{ 'text-success': $page.url === '/Page11' }">This Page</Link>
+    <Link href="/" :class="{ ' ': $page.url === '/Page101' }">Another Page</Link>
+</template>
+
+
+
+
+
+
+
+
+
+
+resources/js/pages/Page12.vue
+<script setup>
+
+import NavBar from "@/components/NavBar.vue";
+import {router} from "@inertiajs/vue3";
+
+const btnOnClick = () => {
+   // router.get("/Page7")
+
+    router.post("/Page1",{}, {
+        headers: {
+            'X-Custom-Header': 'Custom Value',
+            'Authorization': 'Bearer YOUR_ACCESS_TOKEN'
+        },
+        replace: true,
+        preserveScroll: true,
+        onSuccess: () => {
+            console.log('Form submitted successfully!');
+        },
+        onError: () => {
+            console.log('Form submission failed!');
+        }
+    });
+
+}
+</script>
+
+<template>
+    <NavBar/>
+    <button @click="btnOnClick">Click</button>
+</template>
+
+
+
+
+
+
+
